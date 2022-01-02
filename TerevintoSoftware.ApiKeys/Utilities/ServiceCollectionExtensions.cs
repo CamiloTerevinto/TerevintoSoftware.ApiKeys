@@ -1,8 +1,9 @@
-﻿using TerevintoSoftware.AspNetCore.Authentication.ApiKeys;
+﻿using Microsoft.AspNetCore.Authentication;
+using TerevintoSoftware.AspNetCore.Authentication.ApiKeys;
 using TerevintoSoftware.AspNetCore.Authentication.ApiKeys.Abstractions;
 using TerevintoSoftware.AspNetCore.Authentication.ApiKeys.Internal;
 
-namespace Microsoft.AspNetCore.Authentication
+namespace Microsoft.Extensions.DependencyInjection
 {
     public static class ServiceCollectionExtensions
     {

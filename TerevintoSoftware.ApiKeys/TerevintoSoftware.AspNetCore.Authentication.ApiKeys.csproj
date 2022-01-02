@@ -13,8 +13,16 @@
 		<PackageProjectUrl>https://github.com/CamiloTerevinto/TerevintoSoftware.ApiKeys</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/CamiloTerevinto/TerevintoSoftware.ApiKeys</RepositoryUrl>
 		<Description>A package for using secure API Keys middleware in ASP.NET Core. Read the README in the GitHub project for information on usage.</Description>
-		<Version>1.0.1</Version>
+		<Version>1.0.2</Version>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
 	</PropertyGroup>
+
+	<ItemGroup>
+	  <None Include="..\README.md">
+	    <Pack>True</Pack>
+	    <PackagePath>\</PackagePath>
+	  </None>
+	</ItemGroup>
 
 	<ItemGroup>
 		<ProjectReference Include="..\TerevintoSoftware.AspNetCore.Authentication.ApiKeys.Abstractions\TerevintoSoftware.AspNetCore.Authentication.ApiKeys.Abstractions.csproj" />
