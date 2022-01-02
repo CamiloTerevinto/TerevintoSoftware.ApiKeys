@@ -1,18 +1,21 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
-  <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-    <OutputType>Library</OutputType>
-    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <Authors>Camilo Terevinto</Authors>
-    <PackageTags>asp.net core;authentication;api keys</PackageTags>
-    <PackageReleaseNotes>First release</PackageReleaseNotes>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<OutputType>Library</OutputType>
+		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+		<Authors>Camilo Terevinto</Authors>
+		<PackageTags>asp.net core;authentication;api keys</PackageTags>
+		<PackageReleaseNotes>First release</PackageReleaseNotes>
+		<PackageProjectUrl>https://github.com/CamiloTerevinto/TerevintoSoftware.ApiKeys</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/CamiloTerevinto/TerevintoSoftware.ApiKeys</RepositoryUrl>
+		<Description>A package for using secure API Keys middleware in ASP.NET Core. Read the README in the GitHub project for information on usage.</Description>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\TerevintoSoftware.AspNetCore.Authentication.ApiKeys.Abstractions\TerevintoSoftware.AspNetCore.Authentication.ApiKeys.Abstractions.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\TerevintoSoftware.AspNetCore.Authentication.ApiKeys.Abstractions\TerevintoSoftware.AspNetCore.Authentication.ApiKeys.Abstractions.csproj" />
+	</ItemGroup>
 
 </Project>

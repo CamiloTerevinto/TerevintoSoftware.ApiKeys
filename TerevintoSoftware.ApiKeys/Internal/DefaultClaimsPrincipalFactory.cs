@@ -4,11 +4,10 @@ using TerevintoSoftware.AspNetCore.Authentication.ApiKeys.Abstractions;
 namespace TerevintoSoftware.AspNetCore.Authentication.ApiKeys.Internal
 {
     /// <summary>
-    /// Default implementation for the <see cref="IClaimsPrincipalFactory"/> service. Creates a principal with only the owner ID.
+    /// Default implementation for the <see cref="IClaimsPrincipalFactory"/> service. Creates a principal with the single claim of the owner ID.
     /// </summary>
-    internal class ClaimsPrincipalFactory : IClaimsPrincipalFactory
+    internal sealed class DefaultClaimsPrincipalFactory : IClaimsPrincipalFactory
     {
-        /// <inheritdoc />
         public Task<ClaimsPrincipal> CreateClaimsPrincipal(string apiKeyOwnerId)
         {
             var claims = new[] { new Claim(ClaimTypes.Name, apiKeyOwnerId) };
