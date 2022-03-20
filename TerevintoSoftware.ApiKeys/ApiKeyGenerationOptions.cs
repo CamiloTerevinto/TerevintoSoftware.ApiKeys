@@ -11,11 +11,6 @@
         public string? KeyPrefix { get; set; }
 
         /// <summary>
-        /// Gets or sets the count of cryptographic RNG numbers to generate.
-        /// </summary>
-        public int ByteCountToGenerate { get; set; }
-
-        /// <summary>
         /// Gets or sets the desider final length for an API key.
         /// </summary>
         public int LengthOfKey { get; set; }
@@ -33,14 +28,14 @@
         {
             KeyPrefix ??= "";
 
-            if (ByteCountToGenerate < 1)
-            {
-                throw new InvalidOperationException($"A positive, non-zero byte count to generate is required.");
-            }
-
             if (LengthOfKey < 1)
             {
-                throw new InvalidOperationException($"A positive, non-zero byte count to generate is required.");
+                throw new InvalidOperationException("A positive, non-zero length of key is required.");
+            }
+
+            if (LengthOfKey < KeyPrefix.Length)
+            {
+                throw new InvalidOperationException("The length of the key must be bigger than the key prefix.");
             }
         }
     }

@@ -1,4 +1,5 @@
 # TerevintoSoftware.AspNetCore.Authentication.ApiKeys
+[![Coverage Status](https://coveralls.io/repos/github/CamiloTerevinto/TerevintoSoftware.ApiKeys/badge.svg?branch=master)](https://coveralls.io/github/CamiloTerevinto/TerevintoSoftware.ApiKeys?branch=master)
 
 ## Introduction
 

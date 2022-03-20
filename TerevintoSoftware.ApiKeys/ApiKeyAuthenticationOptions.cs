@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authentication;
+using System.Diagnostics.CodeAnalysis;
 
 namespace TerevintoSoftware.AspNetCore.Authentication.ApiKeys
 {
     /// <summary>
     /// Contains the options needed by <see cref="ApiKeyAuthenticationHandler"/>
     /// </summary>
+    [ExcludeFromCodeCoverage]
     public class ApiKeyAuthenticationOptions : AuthenticationSchemeOptions
     {
         /// <summary>

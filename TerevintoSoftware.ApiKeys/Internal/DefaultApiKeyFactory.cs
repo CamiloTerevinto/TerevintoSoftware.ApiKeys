@@ -18,19 +18,20 @@ namespace TerevintoSoftware.AspNetCore.Authentication.ApiKeys.Internal
 
         public string GenerateApiKey()
         {
-            var bytes = RandomNumberGenerator.GetBytes(_options.ByteCountToGenerate);
+            var bytes = RandomNumberGenerator.GetBytes(_options.LengthOfKey);
 
             string base64String = Convert.ToBase64String(bytes);
 
             if (_options.GenerateUrlSafeKeys)
             {
                 base64String = base64String
-                    .Replace("/", "")
-                    .Replace("+", "")
-                    .Replace("=", "");
+                    .Replace("+", "-")
+                    .Replace("/", "_");
             }
+            
+            var keyLength = _options.LengthOfKey - _options.KeyPrefix!.Length;
 
-            return string.Concat(_options.KeyPrefix, base64String.AsSpan(0, _options.LengthOfKey - _options.KeyPrefix!.Length));
+            return _options.KeyPrefix + base64String[..keyLength];
         }
     }
 }

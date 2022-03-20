@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authentication;
+using System.Diagnostics.CodeAnalysis;
 using TerevintoSoftware.AspNetCore.Authentication.ApiKeys;
 using TerevintoSoftware.AspNetCore.Authentication.ApiKeys.Abstractions;
 using TerevintoSoftware.AspNetCore.Authentication.ApiKeys.Internal;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
+    [ExcludeFromCodeCoverage]
     public static class ServiceCollectionExtensions
     {
         /// <summary>
