@@ -25,7 +25,7 @@ jobs:
       uses: coverallsapp/github-action@master   
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
-        path-to-lcov: FeatureFlags/FeatureFlags.Tests/TestResults/coverage.info 
+        path-to-lcov: TerevintoSoftware.AspNetCore.Authentication.ApiKeys.Tests/TestResults/coverage.info 
     - name: Package
       run: dotnet pack -o ./packaged --no-build
     - name: Publish packages
