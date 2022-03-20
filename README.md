@@ -1,11 +1,7 @@
-# TerevintoSoftware.AspNetCore.Authentication.ApiKeys
-[![Coverage Status](https://coveralls.io/repos/github/CamiloTerevinto/TerevintoSoftware.ApiKeys/badge.svg?branch=master)](https://coveralls.io/github/CamiloTerevinto/TerevintoSoftware.ApiKeys?branch=master)
+# TerevintoSoftware.AspNetCore.Authentication.ApiKeys [![Coverage Status](https://coveralls.io/repos/github/CamiloTerevinto/TerevintoSoftware.ApiKeys/badge.svg?branch=master)](https://coveralls.io/github/CamiloTerevinto/TerevintoSoftware.ApiKeys?branch=master)
 
-## Introduction
-
-This solution contains a set of classes and interfaces to add API Keys authentication to an ASP.NET Core application.
-
-This package is split into two parts:
+This solution contains a set of classes and interfaces to add API Keys authentication to an ASP.NET Core application.  
+This solution is split into two packages:
 
 | Package | Purpose |
 | ------- | ------- |
@@ -37,7 +33,6 @@ builder.Services
     .AddDefaultApiKeyGenerator(new ApiKeyGenerationOptions
     {
         KeyPrefix = "CT-",
-        ByteCountToGenerate = 32,
         GenerateUrlSafeKeys = true,
         LengthOfKey = 36
     })
