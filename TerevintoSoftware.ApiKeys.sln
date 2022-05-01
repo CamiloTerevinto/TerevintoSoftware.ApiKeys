@@ -14,7 +14,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TerevintoSoftware.AspNetCore.Authentication.ApiKeys.Tests", "TerevintoSoftware.AspNetCore.Authentication.ApiKeys.Tests\TerevintoSoftware.AspNetCore.Authentication.ApiKeys.Tests.csproj", "{10A376D4-36F6-4EF8-9BA2-A633E7CB9D10}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TerevintoSoftware.AspNetCore.Authentication.ApiKeys.Tests", "TerevintoSoftware.AspNetCore.Authentication.ApiKeys.Tests\TerevintoSoftware.AspNetCore.Authentication.ApiKeys.Tests.csproj", "{10A376D4-36F6-4EF8-9BA2-A633E7CB9D10}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
