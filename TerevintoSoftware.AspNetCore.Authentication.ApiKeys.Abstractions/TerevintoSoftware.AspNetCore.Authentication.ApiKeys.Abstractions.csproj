@@ -9,18 +9,15 @@
 		<PackageTags>asp.net core;authentication;api keys</PackageTags>
 		<PackageProjectUrl>https://github.com/CamiloTerevinto/TerevintoSoftware.ApiKeys</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/CamiloTerevinto/TerevintoSoftware.ApiKeys</RepositoryUrl>
-		<Description>
-			A package for using secure API Keys middleware in ASP.NET Core.
-			Read the README in the GitHub project for information on usage.
-			This package contains only abstractions needed by the main package.
-		</Description>
-		<PackageReleaseNotes>
-			[1.1.0]: Improve the API by removing unnecessary public surface and generating keys of the same length.
-			[1.0.0]: First release
-		</PackageReleaseNotes>
-		<Version>1.1.0</Version>
+		<Description>A package for using secure API Keys middleware in ASP.NET Core.
+Read the README in the GitHub project for information on usage.
+This package contains only abstractions needed by the main package.		</Description>
+		<PackageReleaseNotes>[1.1.1]: Add missing license file.
+[1.1.0]: Improve the API by removing unnecessary public surface and generating keys of the same length.
+[1.0.0]: First release		</PackageReleaseNotes>
+		<Version>1.1.1</Version>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
-		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<Copyright>Camilo Terevinto</Copyright>
 	</PropertyGroup>
 
 	<ItemGroup>
