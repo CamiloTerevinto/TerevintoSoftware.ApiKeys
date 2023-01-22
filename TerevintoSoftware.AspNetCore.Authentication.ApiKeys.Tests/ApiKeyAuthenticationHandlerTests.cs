@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Moq;
@@ -37,10 +38,20 @@ namespace TerevintoSoftware.AspNetCore.Authentication.ApiKeys.Tests
 
             var urlEncoderMock = new Mock<UrlEncoder>();
             var systemClockMock = new Mock<ISystemClock>();
-            var claimsPrincipalFactoryMock = new DefaultClaimsPrincipalFactory();
+            var factoryMock = new Mock<IStringLocalizerFactory>();
+            var localizerMock = new Mock<IStringLocalizer<ApiKeyAuthenticationHandler>>();
+            var claimsPrincipalFactory = new DefaultClaimsPrincipalFactory();
+
+            localizerMock
+                .Setup(x => x[_apiKeyAuthenticationOptions.FailureMessage])
+                .Returns(new LocalizedString(_apiKeyAuthenticationOptions.FailureMessage, _apiKeyAuthenticationOptions.FailureMessage));
+
+            factoryMock
+                .Setup(x => x.Create(It.IsAny<string>(), It.IsAny<string>()))
+                .Returns(localizerMock.Object);
 
             _handler = new ApiKeyAuthenticationHandler(optionsMonitorMock.Object, loggerFactoryMock.Object,
-                urlEncoderMock.Object, systemClockMock.Object, _apiKeysCacheServiceMock.Object, claimsPrincipalFactoryMock);
+                urlEncoderMock.Object, systemClockMock.Object, _apiKeysCacheServiceMock.Object, claimsPrincipalFactory, factoryMock.Object);
         }
 
         [Test]

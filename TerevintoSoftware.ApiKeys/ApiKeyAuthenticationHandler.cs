@@ -1,66 +1,84 @@
 ﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
+using System.Reflection;
 using System.Text.Encodings.Web;
 using TerevintoSoftware.AspNetCore.Authentication.ApiKeys.Abstractions;
 
-namespace TerevintoSoftware.AspNetCore.Authentication.ApiKeys
+namespace TerevintoSoftware.AspNetCore.Authentication.ApiKeys;
+
+/// <summary>
+/// Authentication handler for API Keys. 
+/// Validates the API Key header format and that an API key can be found by <see cref="IApiKeysCacheService"/>.
+/// </summary>
+public class ApiKeyAuthenticationHandler : AuthenticationHandler<ApiKeyAuthenticationOptions>
 {
-    /// <summary>
-    /// Authentication handler for API Keys. 
-    /// Validates the API Key header format and that an API key can be found by <see cref="IApiKeysCacheService"/>.
-    /// </summary>
-    public class ApiKeyAuthenticationHandler : AuthenticationHandler<ApiKeyAuthenticationOptions>
+    private readonly IApiKeysCacheService _cacheService;
+    private readonly IClaimsPrincipalFactory _claimsPrincipalFactory;
+    private readonly IStringLocalizerFactory _stringLocalizerFactory;
+
+    public ApiKeyAuthenticationHandler(IOptionsMonitor<ApiKeyAuthenticationOptions> optionsMonitor, ILoggerFactory loggerFactory, UrlEncoder encoder,
+        ISystemClock clock, IApiKeysCacheService cacheService, IClaimsPrincipalFactory claimsPrincipalFactory,
+        IStringLocalizerFactory stringLocalizerFactory) : base(optionsMonitor, loggerFactory, encoder, clock)
     {
-        private readonly IApiKeysCacheService _cacheService;
-        private readonly IClaimsPrincipalFactory _claimsPrincipalFactory;
-        private readonly ApiKeyAuthenticationOptions _options;
+        _cacheService = cacheService;
+        _claimsPrincipalFactory = claimsPrincipalFactory;
+        _stringLocalizerFactory = stringLocalizerFactory;
+    }
 
-        public ApiKeyAuthenticationHandler(IOptionsMonitor<ApiKeyAuthenticationOptions> optionsMonitor, ILoggerFactory loggerFactory, UrlEncoder encoder,
-            ISystemClock clock, IApiKeysCacheService cacheService, IClaimsPrincipalFactory claimsPrincipalFactory) : base(optionsMonitor, loggerFactory, encoder, clock)
+    protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
+    {
+        if (!Request.Headers.TryGetValue(ApiKeyAuthenticationOptions.HeaderName, out var apiKey) || apiKey.Count != 1)
         {
-            _cacheService = cacheService;
-            _claimsPrincipalFactory = claimsPrincipalFactory;
-            _options = optionsMonitor.CurrentValue;
+            if (Options.NoApiKeyHeaderLog is { } noApiKeyHeaderLog)
+            {
+                Logger.Log(noApiKeyHeaderLog.Item1, noApiKeyHeaderLog.Item2, ApiKeyAuthenticationOptions.HeaderName);
+            }
+
+            return AuthenticateResult.Fail(Options.FailureMessage);
         }
 
-        protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
+        var apiKeyOwnerId = await _cacheService.GetOwnerIdFromApiKey(apiKey);
+
+        if (string.IsNullOrWhiteSpace(apiKeyOwnerId))
         {
-            if (!Request.Headers.TryGetValue(ApiKeyAuthenticationOptions.HeaderName, out var apiKey) || apiKey.Count != 1)
+            if (Options.InvalidApiKeyLog is { } invalidApiKeyLog)
             {
-                if (_options.NoApiKeyHeaderLog is { } noApiKeyHeaderLog)
-                {
-                    Logger.Log(noApiKeyHeaderLog.Item1, noApiKeyHeaderLog.Item2, ApiKeyAuthenticationOptions.HeaderName);
-                }
-
-                return AuthenticateResult.Fail(_options.FailureMessage);
+                Logger.Log(invalidApiKeyLog.Item1, invalidApiKeyLog.Item2, apiKey);
             }
 
-            var apiKeyOwnerId = await _cacheService.GetOwnerIdFromApiKey(apiKey);
-
-            if (string.IsNullOrWhiteSpace(apiKeyOwnerId))
-            {
-                if (_options.InvalidApiKeyLog is { } invalidApiKeyLog)
-                {
-                    Logger.Log(invalidApiKeyLog.Item1, invalidApiKeyLog.Item2, apiKey);
-                }
-
-                return AuthenticateResult.Fail(_options.FailureMessage);
-            }
-
-            if (!string.IsNullOrEmpty(_options.ApiKeyOwnerIdLogScopeName))
-            {
-                Logger.BeginScope(_options.ApiKeyOwnerIdLogScopeName, apiKeyOwnerId);
-            }
-
-            if (_options.ValidApiKeyLog is { } validApiKeyLog)
-            {
-                Logger.Log(validApiKeyLog.Item1, validApiKeyLog.Item2);
-            }
-
-            var principal = await _claimsPrincipalFactory.CreateClaimsPrincipal(apiKeyOwnerId);
-            var ticket = new AuthenticationTicket(principal, ApiKeyAuthenticationOptions.DefaultScheme);
-
-            return AuthenticateResult.Success(ticket);
+            return AuthenticateResult.Fail(Options.FailureMessage);
         }
+
+        if (!string.IsNullOrEmpty(Options.ApiKeyOwnerIdLogScopeName))
+        {
+            Logger.BeginScope(Options.ApiKeyOwnerIdLogScopeName, apiKeyOwnerId);
+        }
+
+        if (Options.ValidApiKeyLog is { } validApiKeyLog)
+        {
+            Logger.Log(validApiKeyLog.Item1, validApiKeyLog.Item2);
+        }
+
+        var principal = await _claimsPrincipalFactory.CreateClaimsPrincipal(apiKeyOwnerId);
+        var ticket = new AuthenticationTicket(principal, ApiKeyAuthenticationOptions.DefaultScheme);
+
+        return AuthenticateResult.Success(ticket);
+    }
+
+    protected override async Task HandleChallengeAsync(AuthenticationProperties properties)
+    {
+        var localizer = _stringLocalizerFactory.Create(nameof(ApiKeyAuthenticationHandler), new AssemblyName(Assembly.GetEntryAssembly()!.FullName!).Name!);
+        var failureMessage = localizer[Options.FailureMessage];
+
+        Response.StatusCode = StatusCodes.Status401Unauthorized;
+
+        await Response.WriteAsJsonAsync(new ProblemDetails
+        {
+            Detail = failureMessage,
+            Status = StatusCodes.Status401Unauthorized,
+            Title = failureMessage
+        });
     }
 }

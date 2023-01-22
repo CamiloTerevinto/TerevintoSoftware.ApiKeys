@@ -12,6 +12,7 @@ builder.Services.AddSwaggerGen(setup =>
     setup.AddApiKeySupport();
 });
 
+builder.Services.AddLocalization(opt => opt.ResourcesPath = "Resources");
 
 builder.Services
     .AddDefaultApiKeyGenerator(new ApiKeyGenerationOptions
@@ -27,6 +28,12 @@ builder.Services
     .AddSingleton<IApiKeysCacheService, CacheService>();
 
 var app = builder.Build();
+
+app.UseRequestLocalization(opt =>
+{
+    opt.AddSupportedCultures("en", "es");
+    opt.AddSupportedUICultures("en", "es");
+});
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

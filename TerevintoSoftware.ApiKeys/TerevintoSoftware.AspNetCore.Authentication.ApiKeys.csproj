@@ -13,13 +13,17 @@
 		<RepositoryUrl>https://github.com/CamiloTerevinto/TerevintoSoftware.ApiKeys</RepositoryUrl>
 		<Description>A package for using secure API Keys middleware in ASP.NET Core.
 Read the README in the GitHub project for information on usage.		</Description>
-		<PackageReleaseNotes>[1.2.1]: Add missing license file.
+		<PackageReleaseNotes>[1.3.0]: Add support to localize the error message on authentication failure.
+[1.2.1]: Add missing license file.
 [1.2.0]: Add support for Swagger UI.
 [1.1.0]: Improve the API by removing unnecessary public surface and generating keys of the same length.
 [1.0.0]: First release	</PackageReleaseNotes>
-		<Version>1.2.1</Version>
+		<Version>1.3.0</Version>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<Copyright>Camilo Terevinto</Copyright>
+		<Title>TerevintoSoftware API Keys</Title>
+		<AnalysisLevel>6.0</AnalysisLevel>
+		<NeutralLanguage>en</NeutralLanguage>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -35,7 +39,7 @@ Read the README in the GitHub project for information on usage.		</Description>
 
 	<ItemGroup>
 		<ProjectReference Include="..\TerevintoSoftware.AspNetCore.Authentication.ApiKeys.Abstractions\TerevintoSoftware.AspNetCore.Authentication.ApiKeys.Abstractions.csproj" />
-		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.1" />
+		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
 	</ItemGroup>
 
 </Project>
