@@ -12,13 +12,16 @@
 		<PackageProjectUrl>https://github.com/CamiloTerevinto/TerevintoSoftware.ApiKeys</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/CamiloTerevinto/TerevintoSoftware.ApiKeys</RepositoryUrl>
 		<Description>A package for using secure API Keys middleware in ASP.NET Core.
-Read the README in the GitHub project for information on usage.		</Description>
-		<PackageReleaseNotes>[1.3.0]: Add support to localize the error message on authentication failure.
+Read the README in the GitHub project for information on usage.</Description>
+		<PackageReleaseNotes>[1.3.1]: Add package icon and license.
+[1.3.0]: Add support to localize the error message on authentication failure.
 [1.2.1]: Add missing license file.
 [1.2.0]: Add support for Swagger UI.
 [1.1.0]: Improve the API by removing unnecessary public surface and generating keys of the same length.
 [1.0.0]: First release	</PackageReleaseNotes>
-		<Version>1.3.0</Version>
+		<Version>1.3.1</Version>
+		<PackageIcon>icon.png</PackageIcon>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<Copyright>Camilo Terevinto</Copyright>
 		<Title>TerevintoSoftware API Keys</Title>
@@ -31,6 +34,7 @@ Read the README in the GitHub project for information on usage.		</Description>
 			<Pack>True</Pack>
 			<PackagePath>\</PackagePath>
 		</None>
+		<None Include="..\icon.png" Pack="true" PackagePath="\"/>
 	</ItemGroup>
 
 	<ItemGroup>
