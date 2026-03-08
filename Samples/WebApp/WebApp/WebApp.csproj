@@ -1,10 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
 	<PropertyGroup>
-		<TargetFramework>net6.0</TargetFramework>
+		<TargetFramework>net10.0</TargetFramework>
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
 	</PropertyGroup>
+
+	<ItemGroup>
+	  <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.3" />
+	  <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="10.1.4" />
+	</ItemGroup>
 
 	<ItemGroup>
 	  <ProjectReference Include="..\..\..\TerevintoSoftware.ApiKeys\TerevintoSoftware.AspNetCore.Authentication.ApiKeys.csproj" />

@@ -3,18 +3,12 @@ using TerevintoSoftware.AspNetCore.Authentication.ApiKeys.Abstractions;
 
 namespace WebApp
 {
-    public class CacheService : IApiKeysCacheService
+    public class CacheService(IMemoryCache memoryCache, IClientsService clientsService) : IApiKeysCacheService
     {
         private static readonly TimeSpan _cacheKeysTimeToLive = new(1, 0, 0);
 
-        private readonly IMemoryCache _memoryCache;
-        private readonly IClientsService _clientsService;
-
-        public CacheService(IMemoryCache memoryCache, IClientsService clientsService)
-        {
-            _memoryCache = memoryCache;
-            _clientsService = clientsService;
-        }
+        private readonly IMemoryCache _memoryCache = memoryCache;
+        private readonly IClientsService _clientsService = clientsService;
 
         public async ValueTask<string?> GetOwnerIdFromApiKey(string apiKey)
         {
@@ -25,7 +19,7 @@ namespace WebApp
                 _memoryCache.Set("Authentication_ApiKeys", internalKeys, _cacheKeysTimeToLive);
             }
 
-            if (!internalKeys.TryGetValue(apiKey, out var clientId))
+            if (!internalKeys!.TryGetValue(apiKey, out var clientId))
             {
                 return null;
             }
@@ -37,7 +31,7 @@ namespace WebApp
         {
             if (_memoryCache.TryGetValue<Dictionary<string, Guid>>("Authentication_ApiKeys", out var internalKeys))
             {
-                if (internalKeys.ContainsKey(apiKey))
+                if (internalKeys!.ContainsKey(apiKey))
                 {
                     internalKeys.Remove(apiKey);
                     _memoryCache.Set("Authentication_ApiKeys", internalKeys);

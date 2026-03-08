@@ -1,3 +1,4 @@
+using Microsoft.OpenApi;
 using TerevintoSoftware.AspNetCore.Authentication.ApiKeys;
 using TerevintoSoftware.AspNetCore.Authentication.ApiKeys.Abstractions;
 using WebApp;
@@ -7,10 +8,7 @@ builder.Logging.AddSimpleConsole(options => options.IncludeScopes = true);
 
 builder.Services.AddEndpointsApiExplorer();
 
-builder.Services.AddSwaggerGen(setup =>
-{
-    setup.AddApiKeySupport();
-});
+builder.Services.AddOpenApi(opt => { opt.AddDocumentTransformer<ApiKeyTransformer>(); });
 
 builder.Services.AddLocalization(opt => opt.ResourcesPath = "Resources");
 
@@ -29,17 +27,14 @@ builder.Services
 
 var app = builder.Build();
 
-app.UseRequestLocalization(opt =>
-{
-    opt.AddSupportedCultures("en", "es");
-    opt.AddSupportedUICultures("en", "es");
-});
-
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    app.MapOpenApi();
+    app.UseSwaggerUI(options =>
+    {
+        options.SwaggerEndpoint("/openapi/v1.json", "v1");
+    });
 }
 
 app.UseAuthentication();

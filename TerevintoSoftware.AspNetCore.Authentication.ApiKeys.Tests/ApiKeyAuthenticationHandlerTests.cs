@@ -37,7 +37,6 @@ namespace TerevintoSoftware.AspNetCore.Authentication.ApiKeys.Tests
             loggerFactoryMock.Setup(x => x.CreateLogger(It.IsAny<string>())).Returns(_logger.Object);
 
             var urlEncoderMock = new Mock<UrlEncoder>();
-            var systemClockMock = new Mock<ISystemClock>();
             var factoryMock = new Mock<IStringLocalizerFactory>();
             var localizerMock = new Mock<IStringLocalizer<ApiKeyAuthenticationHandler>>();
             var claimsPrincipalFactory = new DefaultClaimsPrincipalFactory();
@@ -51,7 +50,7 @@ namespace TerevintoSoftware.AspNetCore.Authentication.ApiKeys.Tests
                 .Returns(localizerMock.Object);
 
             _handler = new ApiKeyAuthenticationHandler(optionsMonitorMock.Object, loggerFactoryMock.Object,
-                urlEncoderMock.Object, systemClockMock.Object, _apiKeysCacheServiceMock.Object, claimsPrincipalFactory, factoryMock.Object);
+                urlEncoderMock.Object, _apiKeysCacheServiceMock.Object, claimsPrincipalFactory, factoryMock.Object);
         }
 
         [Test]
@@ -94,11 +93,11 @@ namespace TerevintoSoftware.AspNetCore.Authentication.ApiKeys.Tests
         {
             var apiKey = "CT-123";
             var context = new DefaultHttpContext();
-            context.Request.Headers.Add(ApiKeyAuthenticationOptions.HeaderName, apiKey);
+            context.Request.Headers[ApiKeyAuthenticationOptions.HeaderName] = apiKey;
             await _handler.InitializeAsync(
                 new AuthenticationScheme(ApiKeyAuthenticationOptions.DefaultScheme, null, typeof(ApiKeyAuthenticationHandler)), context);
 
-            _apiKeysCacheServiceMock.Setup(x => x.GetOwnerIdFromApiKey(apiKey)).Returns(null);
+            _apiKeysCacheServiceMock.Setup(x => x.GetOwnerIdFromApiKey(apiKey)).Returns(null!);
 
             var result = await _handler.AuthenticateAsync();
 
@@ -119,11 +118,11 @@ namespace TerevintoSoftware.AspNetCore.Authentication.ApiKeys.Tests
             _apiKeyAuthenticationOptions.InvalidApiKeyLog = null;
             var apiKey = "CT-123";
             var context = new DefaultHttpContext();
-            context.Request.Headers.Add(ApiKeyAuthenticationOptions.HeaderName, apiKey);
+            context.Request.Headers[ApiKeyAuthenticationOptions.HeaderName] = apiKey;
             await _handler.InitializeAsync(
                 new AuthenticationScheme(ApiKeyAuthenticationOptions.DefaultScheme, null, typeof(ApiKeyAuthenticationHandler)), context);
 
-            _apiKeysCacheServiceMock.Setup(x => x.GetOwnerIdFromApiKey(apiKey)).Returns(null);
+            _apiKeysCacheServiceMock.Setup(x => x.GetOwnerIdFromApiKey(apiKey)).Returns(null!);
 
             var result = await _handler.AuthenticateAsync();
 
@@ -138,7 +137,7 @@ namespace TerevintoSoftware.AspNetCore.Authentication.ApiKeys.Tests
             var apiKey = "CT-123";
             var ownerId = "owner";
             var context = new DefaultHttpContext();
-            context.Request.Headers.Add(ApiKeyAuthenticationOptions.HeaderName, apiKey);
+            context.Request.Headers[ApiKeyAuthenticationOptions.HeaderName] = apiKey;
             await _handler.InitializeAsync(
                 new AuthenticationScheme(ApiKeyAuthenticationOptions.DefaultScheme, null, typeof(ApiKeyAuthenticationHandler)), context);
 
@@ -167,7 +166,7 @@ namespace TerevintoSoftware.AspNetCore.Authentication.ApiKeys.Tests
             var apiKey = "CT-123";
             var ownerId = "owner";
             var context = new DefaultHttpContext();
-            context.Request.Headers.Add(ApiKeyAuthenticationOptions.HeaderName, apiKey);
+            context.Request.Headers[ApiKeyAuthenticationOptions.HeaderName] = apiKey;
             await _handler.InitializeAsync(
                 new AuthenticationScheme(ApiKeyAuthenticationOptions.DefaultScheme, null, typeof(ApiKeyAuthenticationHandler)), context);
 

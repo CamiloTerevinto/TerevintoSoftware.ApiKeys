@@ -12,20 +12,13 @@ namespace TerevintoSoftware.AspNetCore.Authentication.ApiKeys;
 /// Authentication handler for API Keys. 
 /// Validates the API Key header format and that an API key can be found by <see cref="IApiKeysCacheService"/>.
 /// </summary>
-public class ApiKeyAuthenticationHandler : AuthenticationHandler<ApiKeyAuthenticationOptions>
+public class ApiKeyAuthenticationHandler(IOptionsMonitor<ApiKeyAuthenticationOptions> optionsMonitor, ILoggerFactory loggerFactory, 
+    UrlEncoder encoder, IApiKeysCacheService cacheService, IClaimsPrincipalFactory claimsPrincipalFactory, 
+    IStringLocalizerFactory stringLocalizerFactory) : AuthenticationHandler<ApiKeyAuthenticationOptions>(optionsMonitor, loggerFactory, encoder)
 {
-    private readonly IApiKeysCacheService _cacheService;
-    private readonly IClaimsPrincipalFactory _claimsPrincipalFactory;
-    private readonly IStringLocalizerFactory _stringLocalizerFactory;
-
-    public ApiKeyAuthenticationHandler(IOptionsMonitor<ApiKeyAuthenticationOptions> optionsMonitor, ILoggerFactory loggerFactory, UrlEncoder encoder,
-        ISystemClock clock, IApiKeysCacheService cacheService, IClaimsPrincipalFactory claimsPrincipalFactory,
-        IStringLocalizerFactory stringLocalizerFactory) : base(optionsMonitor, loggerFactory, encoder, clock)
-    {
-        _cacheService = cacheService;
-        _claimsPrincipalFactory = claimsPrincipalFactory;
-        _stringLocalizerFactory = stringLocalizerFactory;
-    }
+    private readonly IApiKeysCacheService _cacheService = cacheService;
+    private readonly IClaimsPrincipalFactory _claimsPrincipalFactory = claimsPrincipalFactory;
+    private readonly IStringLocalizerFactory _stringLocalizerFactory = stringLocalizerFactory;
 
     protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
     {
@@ -39,13 +32,13 @@ public class ApiKeyAuthenticationHandler : AuthenticationHandler<ApiKeyAuthentic
             return AuthenticateResult.Fail(Options.FailureMessage);
         }
 
-        var apiKeyOwnerId = await _cacheService.GetOwnerIdFromApiKey(apiKey);
+        var apiKeyOwnerId = await _cacheService.GetOwnerIdFromApiKey(apiKey!);
 
         if (string.IsNullOrWhiteSpace(apiKeyOwnerId))
         {
             if (Options.InvalidApiKeyLog is { } invalidApiKeyLog)
             {
-                Logger.Log(invalidApiKeyLog.Item1, invalidApiKeyLog.Item2, apiKey);
+                Logger.Log(invalidApiKeyLog.Item1, invalidApiKeyLog.Item2, apiKey!);
             }
 
             return AuthenticateResult.Fail(Options.FailureMessage);
