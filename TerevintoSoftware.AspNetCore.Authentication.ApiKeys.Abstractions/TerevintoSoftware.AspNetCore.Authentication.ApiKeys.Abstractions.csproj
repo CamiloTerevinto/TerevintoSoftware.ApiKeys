@@ -4,6 +4,7 @@
 		<TargetFramework>net10.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
+		<IsPackable>true</IsPackable>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 		<Authors>Camilo Terevinto</Authors>
 		<PackageTags>asp.net core;authentication;api keys</PackageTags>
