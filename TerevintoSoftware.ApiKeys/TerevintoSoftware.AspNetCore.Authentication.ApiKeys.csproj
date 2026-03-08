@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
 		<TargetFramework>net10.0</TargetFramework>
@@ -19,8 +19,6 @@ Read the README in the GitHub project for information on usage.</Description>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<Copyright>Camilo Terevinto</Copyright>
 		<Title>TerevintoSoftware API Keys</Title>
-		<AnalysisLevel>6.0</AnalysisLevel>
-		<NeutralLanguage>en</NeutralLanguage>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -29,6 +27,10 @@ Read the README in the GitHub project for information on usage.</Description>
 			<PackagePath>\</PackagePath>
 		</None>
 		<None Include="..\icon.png" Pack="true" PackagePath="\" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<FrameworkReference Include="Microsoft.AspNetCore.App" />
 	</ItemGroup>
 
 	<ItemGroup>
